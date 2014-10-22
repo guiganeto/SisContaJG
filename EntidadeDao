@@ -1,0 +1,39 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package dao;
+
+import ConexaoDB.Conexao;
+import bean.Entidade;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+/**
+ *
+ * @author Admin
+ */
+public class EntidadeDao {
+    
+    public boolean salvar(Entidade entidade) {
+        String sql = "Insert into entidade(nome_entidade, "
+                + "cnpj_entidade) values(?,?)";
+        boolean result = true;
+        Connection conn = Conexao.ConnecrDb();
+        PreparedStatement pst = null;
+                try {
+            pst = conn.prepareStatement(sql);
+            pst.setString(1, entidade.getNome_entidade().toUpperCase().trim());
+            pst.setString(2, entidade.getCnpj_entidade().trim());
+            pst.execute();
+        } catch (SQLException exception) {
+            result = false;
+            System.out.println("ERRO: " + exception.getMessage());
+        }
+        return result;
+    }
+}
